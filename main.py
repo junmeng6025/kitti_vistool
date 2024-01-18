@@ -206,7 +206,7 @@ def pcl_to_img():
 def img_to_pcl():
     pass
 
-def label_to_pcl():
+def semseg_to_pcl():
     pass
 
 

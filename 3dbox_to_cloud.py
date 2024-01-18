@@ -5,19 +5,16 @@ import os
 
 colors = sns.color_palette('Paired', 9 * 2)
 names = ['Car', 'Van', 'Truck', 'Pedestrian', 'Person_sitting', 'Cyclist', 'Tram', 'Misc', 'DontCare']
-file_id = '000319'
-
-TAG = "pvrcnn-relation/2023-09-27_11-17-07/epoch_80"
-
-DATA_PATH = "/home/jun/datasets/kitti_detection_data/training/velodyne"
-GT_LABEL = "/home/jun/datasets/kitti_detection_data/training/label_2"
-PRED_LABEL = "/home/jun/OpenPCDet_vis/from_server/kitti/results_txt/%s/results"%TAG
-OUTPUT_DIR = "/home/jun/OpenPCDet_vis/scenes/kitti/%s"%TAG
+file_id = '000010'
+PCL_PATH = "examples/kitti/velodyne"
+GT_LABEL = "examples/kitti/label_2"
+OUTPUT_DIR = "examples/plot"
+SAVE_PLOT = False
 
 if __name__ == '__main__':
   
   # load point clouds
-  scan_dir = f'{DATA_PATH}/{file_id}.bin'
+  scan_dir = f'{PCL_PATH}/{file_id}.bin'
   scan = np.fromfile(scan_dir, dtype=np.float32).reshape(-1, 4)
 
   # load labels
@@ -25,9 +22,9 @@ if __name__ == '__main__':
   with open(label_dir, 'r') as f:
     labels = f.readlines()
 
-  fig = mlab.figure(bgcolor=(1.0, 1.0, 1.0), size=(1280, 720))
+  fig = mlab.figure(bgcolor=(0, 0, 0), size=(1280, 720))
   # draw point cloud
-  plot = mlab.points3d(scan[:, 0], scan[:, 1], scan[:, 2], mode="point", figure=fig, color=(0, 0, 0))
+  plot = mlab.points3d(scan[:, 0], scan[:, 1], scan[:, 2], mode="point", figure=fig, color=(1, 1, 1))
 
   for line in labels:
     line = line.split()
@@ -72,9 +69,10 @@ if __name__ == '__main__':
       draw(corners_3d[6], corners_3d[2])
       draw(corners_3d[7], corners_3d[3])
 
-  mlab.view(azimuth=230, distance=50)
-  if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
-  # mlab.savefig(filename=f'{OUTPUT_DIR}/kitti_3dbox_to_cloud_{file_id}.png')
-  # print(f"Scene '{file_id}' saved to {OUTPUT_DIR}.")
+  mlab.view(azimuth=230, distance=50) # mod the view: https://docs.enthought.com/mayavi/mayavi/auto/mlab_camera.html
+  if SAVE_PLOT:
+    if not os.path.exists(OUTPUT_DIR):
+      os.makedirs(OUTPUT_DIR)
+    mlab.savefig(filename=f'{OUTPUT_DIR}/kitti_3dbox_to_cloud_{file_id}.png')
+    print(f"Scene '{file_id}' saved to {OUTPUT_DIR}.")
   mlab.show()

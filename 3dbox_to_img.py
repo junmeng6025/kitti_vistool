@@ -4,23 +4,28 @@ import matplotlib.pyplot as plt
 
 from skimage import io
 from matplotlib.lines import Line2D
+import os
 
-# colors = sns.color_palette('Paired', 1)
-colors = ['blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+colors = sns.color_palette('Paired', 9 * 2)
 names = ['Car', 'Van', 'Truck', 'Pedestrian', 'Person_sitting', 'Cyclist', 'Tram', 'Misc', 'DontCare']
-file_id = '000038'
+file_id = '000010'
+IMG_PATH = "examples/kitti/image_2"
+GT_LABEL = "examples/kitti/label_2"
+CALIB_PATH = "examples/kitti/calib"
+OUTPUT_DIR = "examples/plot"
+SAVE_PLOT = False
 
 if __name__ == '__main__':
 
   # load image
-  img = np.array(io.imread(f'examples/kitti/image_2/{file_id}.png'), dtype=np.int32)
+  img = np.array(io.imread(f'{IMG_PATH}/{file_id}.png'), dtype=np.int32)
 
   # load labels
-  with open(f'examples/kitti/label_2/{file_id}.txt', 'r') as f:
+  with open(f'{GT_LABEL}/{file_id}.txt', 'r') as f:
     labels = f.readlines()
 
   # load calibration file
-  with open(f'examples/kitti/calib/{file_id}.txt', 'r') as f:
+  with open(f'{CALIB_PATH}/{file_id}.txt', 'r') as f:
     lines = f.readlines()
     P2 = np.array(lines[2].strip().split(' ')[1:], dtype=np.float32).reshape(3, 4)
 
@@ -77,5 +82,9 @@ if __name__ == '__main__':
   # fig.patch.set_visible(False)
   plt.axis('off')
   plt.tight_layout()
-  plt.savefig('examples/kitti_3dbox_to_img.png', bbox_inches='tight')
+  if SAVE_PLOT:
+    if not os.path.exists(OUTPUT_DIR):
+      os.makedirs(OUTPUT_DIR)
+    plt.savefig(f'{OUTPUT_DIR}/kitti_3dbox_to_img.png', bbox_inches='tight')
+    print(f"Scene '{file_id}' saved to {OUTPUT_DIR}.")
   plt.show()
