@@ -74,15 +74,18 @@ def draw_3d_boxes_to_img(file_id, data_path, output_dir, cls_names,
     # load labels
     gt_labels = open(f'{gt_label_path}/{file_id}.txt', 'r').readlines()\
         if gt_label_path is not None and os.path.exists(gt_label_path) else None
-    boxes_to_img(cam_calib, gt_labels, colormap_gt, cls_names, 2) if gt_labels is not None else print(" [img] No GT labels loaded.")
+    boxes_to_img(cam_calib, gt_labels, colormap_gt, cls_names, 2)\
+        if gt_labels is not None else print(" [img] No GT labels loaded.")
 
     pred_labels = open(f'{pred_label_path}/{file_id}.txt', 'r').readlines()\
         if pred_label_path is not None and os.path.exists(pred_label_path) else None
-    boxes_to_img(cam_calib, pred_labels, colormap_baseline, cls_names, 2) if pred_labels is not None else print(" [img] No Baseline labels loaded.")
+    boxes_to_img(cam_calib, pred_labels, colormap_baseline, cls_names, 2)\
+        if pred_labels is not None else print(" [img] No Baseline labels loaded.")
 
     ours_labels = open(f'{ours_label_path}/{file_id}.txt', 'r').readlines()\
         if ours_label_path is not None and os.path.exists(ours_label_path) else None
-    boxes_to_img(cam_calib, ours_labels, colormap_ours, cls_names, 1.5) if ours_labels is not None else print(" [img] No Ours labels loaded.")
+    boxes_to_img(cam_calib, ours_labels, colormap_ours, cls_names, 1.5)\
+        if ours_labels is not None else print(" [img] No Ours labels loaded.")
 
     # fig.patch.set_visible(False)
     plt.axis('off')
