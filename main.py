@@ -14,12 +14,12 @@ def create_directory_if_not_exists(path):
     else:
         print(f"Directory '{path}' already exists.")
 
+
 # Draw 3D Box in Point Cloud ================================================================
 def draw_3d_boxes_to_pcl(file_id, data_path, output_dir, cls_names,
                          gt_label_path=None, colormap_gt=None,
                          pred_label_path=None, colormap_baseline=None, 
                          ours_label_path=None, colormap_ours=None, save_plot=False):
-    
     # load point clouds
     scan_dir = f'{data_path}/velodyne/{file_id}.bin'
     scan = np.fromfile(scan_dir, dtype=np.float32).reshape(-1, 4)
@@ -52,6 +52,7 @@ def draw_3d_boxes_to_pcl(file_id, data_path, output_dir, cls_names,
         mlab.savefig(filename=f'{output_dir}/kitti_3dbox_to_cloud_{file_id}.png')
         print(f"Scene '{file_id}' saved to {output_dir}.")
     mlab.show()
+
 
 # Draw 3D Box in Image ==================================================================
 def draw_3d_boxes_to_img(file_id, data_path, output_dir, cls_names, 
@@ -94,6 +95,7 @@ def draw_3d_boxes_to_img(file_id, data_path, output_dir, cls_names,
         plt.savefig(f'{output_dir}/kitti_3dbox_to_img_{file_id}.png', bbox_inches='tight')
         print(f"Scene '{file_id}' saved to {output_dir}.")
     plt.show()
+
 
 # TBD =======================================================
 def bbox_to_img():
